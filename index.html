@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Vault - Paste, Detect, and Save</title>
+    
+    <!-- Highlight.js Theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Code Vault</h1>
+            <p>Paste your code, auto-detect the language, and save it with the correct extension.</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group filename-group">
+                <label for="filename">Filename</label>
+                <div class="input-with-extension">
+                    <input type="text" id="filename" placeholder="my_script" autocomplete="off" spellcheck="false">
+                    <span class="extension-preview" id="extension-preview">.txt</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="language">Language</label>
+                <select id="language">
+                    <option value="auto">Auto Detect</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="typescript">TypeScript</option>
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="cpp">C++</option>
+                    <option value="c">C</option>
+                    <option value="csharp">C#</option>
+                    <option value="go">Go</option>
+                    <option value="rust">Rust</option>
+                    <option value="ruby">Ruby</option>
+                    <option value="php">PHP</option>
+                    <option value="swift">Swift</option>
+                    <option value="kotlin">Kotlin</option>
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                    <option value="json">JSON</option>
+                    <option value="sql">SQL</option>
+                    <option value="bash">Bash</option>
+                    <option value="markdown">Markdown</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="editor-container">
+            <div class="pane">
+                <div class="pane-header">Input</div>
+                <textarea id="code-input" placeholder="Paste your code here..." spellcheck="false"></textarea>
+            </div>
+            
+            <div class="pane">
+                <div class="pane-header">
+                    <span>Preview</span>
+                    <span class="detected-lang" id="detected-lang"></span>
+                </div>
+                <pre><code id="code-preview" class="hljs"></code></pre>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button id="copy-btn" class="btn btn-secondary">Copy to Clipboard</button>
+            <button id="download-btn" class="btn btn-primary">Download File</button>
+        </div>
+    </div>
+
+    <!-- Highlight.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- Application Logic -->
+    <script src="script.js"></script>
+</body>
+</html>
