@@ -217,6 +217,9 @@ codeInput.addEventListener('paste', function(e) {
     // Trigger immediate preview update (bypass debounce for paste)
     updatePreview();
     
+    // TEMP DEBUG: remove after testing
+    alert('clipboard: ' + pastedText.length + ' | lines: ' + pastedText.split('\n').length);
+    
     // Focus back on textarea
     this.focus();
 });
