@@ -194,34 +194,13 @@ async function copyToClipboard() {
 // --- Paste Event Handler (Mobile Fix) ---
 
 codeInput.addEventListener('paste', function(e) {
-    // Prevent the default paste behavior
-    e.preventDefault();
+    // Do NOT prevent default. Let the mobile OS handle the paste natively 
+    // to avoid the strict character limits of the JS clipboardData API.
     
-    // Get the text from the clipboard
-    const pastedText = e.clipboardData.getData('text');
-    
-    // Get the current cursor position or selection
-    const startPos = this.selectionStart;
-    const endPos = this.selectionEnd;
-    
-    // Insert the pasted text at cursor position (or replace selection)
-    const beforeText = this.value.substring(0, startPos);
-    const afterText = this.value.substring(endPos);
-    
-    this.value = beforeText + pastedText + afterText;
-    
-    // Move cursor to the end of the pasted text
-    const newCursorPos = startPos + pastedText.length;
-    this.setSelectionRange(newCursorPos, newCursorPos);
-    
-    // Trigger immediate preview update (bypass debounce for paste)
-    updatePreview();
-    
-    // TEMP DEBUG: remove after testing
-    alert('clipboard: ' + pastedText.length + ' | lines: ' + pastedText.split('\n').length);
-    
-    // Focus back on textarea
-    this.focus();
+    // Wait briefly for the browser to finish inserting the large text block
+    setTimeout(() => {
+        updatePreview();
+    }, 200);
 });
 
 // --- Initialization & Event Listeners ---
