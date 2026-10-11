@@ -173,7 +173,7 @@ select:focus {
 #code-input {
     width: 100%;
     min-height: 400px;
-    max-height: 60vh; /* Prevents infinite growth on mobile */
+    /* Removed max-height and overflow-y to allow infinite growth and fix mobile paste truncation */
     padding: 1rem;
     border: none;
     resize: vertical;
@@ -182,15 +182,15 @@ select:focus {
     line-height: 1.6;
     outline: none;
     background: var(--surface-color);
-    overflow-y: auto; /* Enables scrolling for long code */
 }
 
 .code-preview-wrapper {
     display: flex;
-    overflow: auto;
+    overflow-x: auto; /* Keeps horizontal scrolling for very long lines */
     min-height: 400px;
-    max-height: 60vh;
+    /* Removed max-height so the preview grows infinitely with the code */
     background: #0d1117;
+    position: relative;
 }
 
 .line-numbers {
