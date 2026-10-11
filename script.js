@@ -34,6 +34,7 @@ const EXTENSION_MAP = {
 
 const codeInput = document.getElementById('code-input');
 const codePreview = document.getElementById('code-preview');
+const lineNumbersEl = document.getElementById('line-numbers');
 const filenameInput = document.getElementById('filename');
 const extensionPreview = document.getElementById('extension-preview');
 const languageSelect = document.getElementById('language');
@@ -74,6 +75,7 @@ function updatePreview() {
 
     if (!code.trim()) {
         codePreview.textContent = '';
+        lineNumbersEl.textContent = '';
         detectedLangBadge.textContent = '';
         currentLanguage = 'plaintext';
         extensionPreview.textContent = '.txt';
@@ -98,6 +100,11 @@ function updatePreview() {
 
     codePreview.innerHTML = result.value;
     extensionPreview.textContent = `.${getCurrentExtension()}`;
+
+    // Generate line numbers based on raw text newlines
+    const lineCount = code.split('\n').length;
+    const lineNumbers = Array.from({ length: lineCount }, (_, i) => i + 1).join('\n');
+    lineNumbersEl.textContent = lineNumbers;
 
     // Toggle preview button visibility based on language
     if (currentLanguage === 'html') {
@@ -183,6 +190,36 @@ async function copyToClipboard() {
         alert('Failed to copy to clipboard.');
     }
 }
+
+// --- Paste Event Handler (Mobile Fix) ---
+
+codeInput.addEventListener('paste', function(e) {
+    // Prevent the default paste behavior
+    e.preventDefault();
+    
+    // Get the text from the clipboard
+    const pastedText = e.clipboardData.getData('text');
+    
+    // Get the current cursor position or selection
+    const startPos = this.selectionStart;
+    const endPos = this.selectionEnd;
+    
+    // Insert the pasted text at cursor position (or replace selection)
+    const beforeText = this.value.substring(0, startPos);
+    const afterText = this.value.substring(endPos);
+    
+    this.value = beforeText + pastedText + afterText;
+    
+    // Move cursor to the end of the pasted text
+    const newCursorPos = startPos + pastedText.length;
+    this.setSelectionRange(newCursorPos, newCursorPos);
+    
+    // Trigger immediate preview update (bypass debounce for paste)
+    updatePreview();
+    
+    // Focus back on textarea
+    this.focus();
+});
 
 // --- Initialization & Event Listeners ---
 

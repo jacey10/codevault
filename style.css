@@ -173,6 +173,7 @@ select:focus {
 #code-input {
     width: 100%;
     min-height: 400px;
+    max-height: 60vh; /* Prevents infinite growth on mobile */
     padding: 1rem;
     border: none;
     resize: vertical;
@@ -181,18 +182,43 @@ select:focus {
     line-height: 1.6;
     outline: none;
     background: var(--surface-color);
+    overflow-y: auto; /* Enables scrolling for long code */
+}
+
+.code-preview-wrapper {
+    display: flex;
+    overflow: auto;
+    min-height: 400px;
+    max-height: 60vh;
+    background: #0d1117;
+}
+
+.line-numbers {
+    padding: 1rem;
+    padding-right: 0.5rem;
+    text-align: right;
+    color: #6b7280;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    user-select: none;
+    white-space: pre;
+    border-right: 1px solid #30363d;
+    background: #0d1117;
 }
 
 #code-preview {
     margin: 0;
     padding: 1rem;
-    min-height: 400px;
-    overflow: auto;
+    padding-left: 0.5rem;
+    flex: 1;
+    overflow-x: auto;
     font-family: var(--font-mono);
     font-size: 0.9rem;
     line-height: 1.6;
     background: #0d1117; /* Matches github-dark theme */
     color: #c9d1d9;
+    white-space: pre;
 }
 
 /* --- Actions --- */
