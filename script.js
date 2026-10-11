@@ -71,7 +71,7 @@ function getCurrentExtension() {
 // --- Core Logic ---
 
 function updatePreview() {
-    const code = codeInput.value;
+    const code = codeInput.innerText;
 
     if (!code.trim()) {
         codePreview.textContent = '';
@@ -115,7 +115,7 @@ function updatePreview() {
 }
 
 function downloadFile() {
-    const code = codeInput.value;
+    const code = codeInput.innerText;
     
     if (!code.trim()) {
         alert('Please enter some code first.');
@@ -145,7 +145,7 @@ function downloadFile() {
 }
 
 function openInBrowser() {
-    const code = codeInput.value;
+    const code = codeInput.innerText;
     
     if (!code.trim()) {
         alert('Please enter some HTML first.');
@@ -164,7 +164,7 @@ function openInBrowser() {
 }
 
 async function copyToClipboard() {
-    const code = codeInput.value;
+    const code = codeInput.innerText;
     
     if (!code.trim()) {
         alert('Nothing to copy.');
@@ -191,16 +191,23 @@ async function copyToClipboard() {
     }
 }
 
-// --- Paste Event Handler (Mobile Fix) ---
+// --- Paste Event Handler (Mobile Fix & Plain Text Enforcement) ---
 
 codeInput.addEventListener('paste', function(e) {
-    // Do NOT prevent default. Let the mobile OS handle the paste natively 
-    // to avoid the strict character limits of the JS clipboardData API.
+    // Prevent default paste to stop rich text/HTML formatting
+    e.preventDefault();
     
-    // Wait briefly for the browser to finish inserting the large text block
+    // Get plain text from clipboard
+    const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+    
+    // Use execCommand to insert text. This is the most reliable way to handle 
+    // large text blocks in contenteditable divs on mobile without truncation.
+    document.execCommand('insertText', false, text);
+    
+    // Wait briefly for the DOM to update, then refresh preview
     setTimeout(() => {
         updatePreview();
-    }, 200);
+    }, 100);
 });
 
 // --- Initialization & Event Listeners ---

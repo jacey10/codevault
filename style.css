@@ -173,29 +173,42 @@ select:focus {
 #code-input {
     width: 100%;
     min-height: 400px;
-    /* Removed max-height and overflow-y to allow infinite growth and fix mobile paste truncation */
     padding: 1rem;
     border: none;
-    resize: vertical;
     font-family: var(--font-mono);
     font-size: 0.9rem;
     line-height: 1.6;
     outline: none;
     background: var(--surface-color);
+    white-space: pre;
+    overflow-x: auto;
+    word-break: normal;
+    word-wrap: normal;
+}
+
+/* Custom placeholder for contenteditable div */
+#code-input:empty:before {
+    content: attr(placeholder);
+    color: var(--text-secondary);
+    pointer-events: none;
+    display: block;
 }
 
 .code-preview-wrapper {
     display: flex;
-    overflow-x: auto; /* Keeps horizontal scrolling for very long lines */
+    overflow: auto;
     min-height: 400px;
-    /* Removed max-height so the preview grows infinitely with the code */
     background: #0d1117;
     position: relative;
 }
 
 .line-numbers {
-    padding: 1rem;
-    padding-right: 0.5rem;
+    flex-shrink: 0;
+    width: 45px;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    padding: 1rem 0.5rem 1rem 1rem;
     text-align: right;
     color: #6b7280;
     font-family: var(--font-mono);
@@ -212,13 +225,13 @@ select:focus {
     padding: 1rem;
     padding-left: 0.5rem;
     flex: 1;
-    overflow-x: auto;
     font-family: var(--font-mono);
     font-size: 0.9rem;
     line-height: 1.6;
-    background: #0d1117; /* Matches github-dark theme */
+    background: #0d1117;
     color: #c9d1d9;
     white-space: pre;
+    min-width: 0;
 }
 
 /* --- Actions --- */
