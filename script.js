@@ -40,6 +40,7 @@ const languageSelect = document.getElementById('language');
 const detectedLangBadge = document.getElementById('detected-lang');
 const downloadBtn = document.getElementById('download-btn');
 const copyBtn = document.getElementById('copy-btn');
+const previewBtn = document.getElementById('preview-btn');
 
 // --- State ---
 
@@ -76,6 +77,7 @@ function updatePreview() {
         detectedLangBadge.textContent = '';
         currentLanguage = 'plaintext';
         extensionPreview.textContent = '.txt';
+        previewBtn.style.display = 'none';
         return;
     }
 
@@ -96,6 +98,13 @@ function updatePreview() {
 
     codePreview.innerHTML = result.value;
     extensionPreview.textContent = `.${getCurrentExtension()}`;
+
+    // Toggle preview button visibility based on language
+    if (currentLanguage === 'html') {
+        previewBtn.style.display = 'inline-block';
+    } else {
+        previewBtn.style.display = 'none';
+    }
 }
 
 function downloadFile() {
@@ -126,6 +135,25 @@ function downloadFile() {
     // Cleanup
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+}
+
+function openInBrowser() {
+    const code = codeInput.value;
+    
+    if (!code.trim()) {
+        alert('Please enter some HTML first.');
+        return;
+    }
+
+    const newWindow = window.open('', '_blank');
+    
+    if (newWindow) {
+        newWindow.document.open();
+        newWindow.document.write(code);
+        newWindow.document.close();
+    } else {
+        alert('Pop-up blocked. Please allow pop-ups for this site to preview HTML.');
+    }
 }
 
 async function copyToClipboard() {
@@ -177,6 +205,7 @@ filenameInput.addEventListener('input', () => {
 
 downloadBtn.addEventListener('click', downloadFile);
 copyBtn.addEventListener('click', copyToClipboard);
+previewBtn.addEventListener('click', openInBrowser);
 
 // Initial render
 updatePreview();
